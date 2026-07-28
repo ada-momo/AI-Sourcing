@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Sourcing 可视化工作台 2.0</title>
+  <style>
+    :root{
+      --blue:#1456F0;
+      --blue-2:#E8F0FE;
+      --blue-3:#F5F8FF;
+      --text:#1F2329;
+      --muted:#646A73;
+      --line:#E5E6EB;
+      --bg:#F7F8FA;
+      --white:#fff;
+      --green:#00B42A;
+      --orange:#FF7D00;
+      --red:#F53F3F;
+      --red-soft:#FFECE8;
+      --gray:#C9CDD4;
+      --shadow:0 12px 32px rgba(31,35,41,.08);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",Arial,sans-serif;background:linear-gradient(180deg,#F8FAFF 0%,#F7F8FA 42%);color:var(--text)}
+    .app{max-width:1180px;margin:0 auto;padding:24px 18px 48px}
+    .hero{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:18px;padding:22px;border:1px solid rgba(20,86,240,.12);border-radius:24px;background:linear-gradient(135deg,#fff 0%,#F1F6FF 100%);box-shadow:var(--shadow)}
+    .hero h1{margin:0;font-size:28px;letter-spacing:-.5px}
+    .hero p{margin:8px 0 0;color:var(--muted);line-height:1.6}
+    .badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;background:var(--blue-2);color:var(--blue);font-weight:600;padding:7px 12px;font-size:13px;white-space:nowrap}
+    .tabs{position:sticky;top:0;z-index:10;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:10px;margin-bottom:16px;background:rgba(247,248,250,.82);backdrop-filter:blur(12px)}
+    .tab-btn{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:14px;padding:12px 10px;font-weight:650;cursor:pointer;transition:.2s}
+    .tab-btn:hover{border-color:rgba(20,86,240,.35);transform:translateY(-1px)}
+    .tab-btn.active{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 10px 20px rgba(20,86,240,.22)}
+    .panel{display:none;animation:fade .22s ease}.panel.active{display:block}@keyframes fade{from{opacity:.3;transform:translateY(4px)}to{opacity:1;transform:none}}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}.col-12{grid-column:span 12}.col-8{grid-column:span 8}.col-6{grid-column:span 6}.col-4{grid-column:span 4}.col-3{grid-column:span 3}
+    .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 8px 22px rgba(31,35,41,.05);padding:18px}
+    .card h2,.card h3{margin:0 0 14px}.card h2{font-size:20px}.card h3{font-size:16px}
+    .hint{color:var(--muted);font-size:13px;line-height:1.6}.small{font-size:12px;color:var(--muted)}
+    label{display:block;margin:12px 0 7px;font-weight:650}.input,textarea,select{width:100%;border:1px solid var(--line);border-radius:12px;background:#fff;padding:11px 12px;font:inherit;outline:none;transition:.2s}textarea{min-height:120px;resize:vertical}.input:focus,textarea:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(20,86,240,.12)}
+    .btn{border:0;border-radius:12px;padding:11px 15px;font-weight:700;cursor:pointer;transition:.2s;background:var(--blue);color:#fff}.btn:hover{transform:translateY(-1px);box-shadow:0 10px 20px rgba(20,86,240,.22)}.btn.secondary{background:var(--blue-2);color:var(--blue)}.btn.ghost{background:#fff;color:var(--text);border:1px solid var(--line)}.btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.switch-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #F0F1F5}.switch-row:last-child{border-bottom:0}.switch-text b{display:block}.switch-text span{font-size:12px;color:var(--muted)}
+    .switch{position:relative;width:46px;height:26px;flex:0 0 auto}.switch input{display:none}.slider{position:absolute;inset:0;background:#C9CDD4;border-radius:999px;cursor:pointer;transition:.2s}.slider:before{content:"";position:absolute;width:22px;height:22px;left:2px;top:2px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 2px 6px rgba(0,0,0,.2)}.switch input:checked+.slider{background:var(--blue)}.switch input:checked+.slider:before{transform:translateX(20px)}
+    .tags{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.tag{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;background:var(--blue-2);color:var(--blue);font-weight:650;font-size:13px}.tag button{border:0;background:transparent;color:inherit;cursor:pointer;font-size:15px;line-height:1}.add-tag{display:flex;gap:8px;margin-top:8px}.add-tag .input{max-width:260px}
+    .task-table,.candidate-table{width:100%;border-collapse:separate;border-spacing:0 10px}.task-table th,.candidate-table th{text-align:left;color:var(--muted);font-size:12px;font-weight:650;padding:0 10px}.task-table td,.candidate-table td{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 10px;vertical-align:middle}.task-table td:first-child,.candidate-table td:first-child{border-left:1px solid var(--line);border-radius:12px 0 0 12px}.task-table td:last-child,.candidate-table td:last-child{border-right:1px solid var(--line);border-radius:0 12px 12px 0}
+    .status{display:inline-flex;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:700}.pending{background:#F2F3F5;color:#4E5969}.running{background:#FFF7E8;color:var(--orange)}.done{background:#E8FFEA;color:var(--green)}
+    .metric{display:flex;flex-direction:column;gap:6px}.metric strong{font-size:30px;color:var(--blue)}.metric span{color:var(--muted)}
+    .bar-list{display:grid;gap:14px}.bar-row{display:grid;grid-template-columns:170px 1fr 48px;gap:12px;align-items:center}.stack{height:22px;background:#F2F3F5;border-radius:999px;overflow:hidden;display:flex}.seg{height:100%}.seg.valid{background:var(--blue)}.seg.dup{background:#C9CDD4}.seg.bad{background:#FFAAA5}.legend{display:flex;gap:14px;flex-wrap:wrap}.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}.progress-wrap{margin-top:16px}.progress-line{height:12px;border-radius:999px;background:#EDEFF5;overflow:hidden}.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),#5D8CFF);border-radius:999px;transition:.3s}
+    .log-box{height:220px;overflow:auto;border-radius:14px;background:#101820;color:#66F28A;padding:14px;font-family:"SFMono-Regular",Consolas,monospace;font-size:13px;line-height:1.8;border:1px solid #1F2A37}.log-line{white-space:pre-wrap}
+    .toolbar{display:grid;grid-template-columns:1.5fr 180px 180px;gap:10px;margin-bottom:12px}.candidate-mobile{display:none}.stars{color:#FFB020;letter-spacing:1px;white-space:nowrap}.edit{min-width:90px;border:1px dashed transparent;border-radius:8px;padding:6px;outline:none}.edit:hover,.edit:focus{border-color:var(--blue);background:var(--blue-3)}.link{color:var(--blue);font-weight:700;text-decoration:none}.edu{display:inline-flex;padding:5px 8px;border-radius:999px;background:#F0F5FF;color:var(--blue);font-size:12px;font-weight:700}.suggestion{display:none;margin-top:14px;padding:14px;border-radius:14px;border:1px solid rgba(20,86,240,.18);background:linear-gradient(135deg,#F5F8FF,#fff)}.suggestion.show{display:block}.toast{position:fixed;right:20px;bottom:20px;z-index:99;background:#1F2329;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:var(--shadow);opacity:0;transform:translateY(12px);pointer-events:none;transition:.25s}.toast.show{opacity:1;transform:none}
+    @media (max-width:860px){.app{padding:14px 12px 32px}.hero{align-items:flex-start;flex-direction:column;border-radius:20px}.hero h1{font-size:22px}.tabs{grid-template-columns:repeat(2,1fr);gap:8px;padding:8px 0}.grid{display:block}.card{margin-bottom:12px;padding:15px}.toolbar{grid-template-columns:1fr}.bar-row{grid-template-columns:1fr;gap:7px}.candidate-table{display:none}.candidate-mobile{display:grid;gap:12px}.candidate-card{border:1px solid var(--line);border-radius:16px;background:#fff;padding:14px;box-shadow:0 8px 18px rgba(31,35,41,.04)}.candidate-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:10px}.candidate-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px;color:var(--muted)}.candidate-meta b{color:var(--text)}.task-table{font-size:13px}.task-table th:nth-child(4),.task-table td:nth-child(4){display:none}.add-tag{display:block}.add-tag .input{max-width:none;margin-bottom:8px}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="hero">
+      <div>
+        <h1>AI Sourcing 可视化工作台 2.0</h1>
+        <p>面向工程岗位招聘交付的轻量化前端工作台：岗位配置、检索策略、执行进度、候选人看板一站式管理。</p>
+      </div>
+      <div class="badge">✨ Feishu Blue · LocalStorage 持久化</div>
+    </header>
+
+    <nav class="tabs" aria-label="页面页签">
+      <button class="tab-btn active" data-tab="job">岗位配置</button>
+      <button class="tab-btn" data-tab="strategy">检索策略</button>
+      <button class="tab-btn" data-tab="progress">搜索进度 & 结果</button>
+      <button class="tab-btn" data-tab="board">候选人看板</button>
+    </nav>
+
+    <main>
+      <section class="panel active" id="job">
+        <div class="grid">
+          <div class="card col-4">
+            <h2>通用规则</h2>
+            <p class="hint">默认全部开启，配置会自动保存到浏览器本地。</p>
+            <div id="rulesBox"></div>
+          </div>
+          <div class="card col-8">
+            <h2>岗位个性化要求</h2>
+            <label for="jobName">岗位名称</label>
+            <input class="input" id="jobName" placeholder="如：推荐算法工程师 / AI Infra 后端工程师" />
+            <label for="jdText">JD 粘贴文本</label>
+            <textarea id="jdText" placeholder="粘贴岗位 JD，后续可用于 AI 生成检索策略"></textarea>
+            <label for="personaText">岗位画像 / 特殊要求</label>
+            <textarea id="personaText" placeholder="如：大模型训练经验、分布式系统经验、业务落地能力强等"></textarea>
+            <div class="actions" style="margin-top:14px">
+              <button class="btn" id="saveConfig">保存配置</button>
+              <span class="small" id="saveTime"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="strategy">
+        <div class="grid">
+          <div class="card col-12">
+            <div class="actions" style="justify-content:space-between">
+              <div>
+                <h2>AI 生成策略区</h2>
+                <p class="hint">点击后模拟由 JD 生成技能关键词、目标公司与工作年限建议。</p>
+              </div>
+              <button class="btn" id="genAI">🤖 AI生成检索策略</button>
+            </div>
+            <p class="hint" id="aiNote">实际执行时将由 Aime AI 根据 JD 自动生成检索策略</p>
+            <div class="grid" style="margin-top:12px">
+              <div class="card col-4" style="box-shadow:none;background:var(--blue-3)">
+                <h3>技能 / 职责关键词组</h3>
+                <div class="tags" id="keywordTags"></div>
+                <div class="add-tag"><input class="input" id="keywordInput" placeholder="添加关键词" /><button class="btn secondary" data-add="keywords">添加</button></div>
+              </div>
+              <div class="card col-4" style="box-shadow:none;background:var(--blue-3)">
+                <h3>目标公司列表</h3>
+                <div class="tags" id="companyTags"></div>
+                <div class="add-tag"><input class="input" id="companyInput" placeholder="添加公司" /><button class="btn secondary" data-add="companies">添加</button></div>
+              </div>
+              <div class="card col-4" style="box-shadow:none;background:var(--blue-3)">
+                <h3>建议工作年限范围</h3>
+                <div class="actions">
+                  <input class="input" id="yearMin" type="number" min="0" style="max-width:120px" />
+                  <span>至</span>
+                  <input class="input" id="yearMax" type="number" min="0" style="max-width:120px" />
+                  <span>年</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card col-12">
+            <div class="actions" style="justify-content:space-between">
+              <div>
+                <h2>关键词搜索任务列表</h2>
+                <p class="hint">每行代表一个关键词 + 目标公司的搜索组合。</p>
+              </div>
+              <div class="actions">
+                <button class="btn ghost" id="selectAll">全选</button>
+                <button class="btn" id="startTasks">启动选中任务</button>
+              </div>
+            </div>
+            <table class="task-table">
+              <thead><tr><th>选择</th><th>关键词组合</th><th>状态</th><th>命中人数</th></tr></thead>
+              <tbody id="taskBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="progress">
+        <div class="grid">
+          <div class="card col-4 metric"><span>总检索人数</span><strong id="totalCount">0</strong></div>
+          <div class="card col-4 metric"><span>有效简历数</span><strong id="validCount">0</strong></div>
+          <div class="card col-4 metric"><span>去重剔除数</span><strong id="dupCount">0</strong></div>
+          <div class="card col-12">
+            <div class="actions" style="justify-content:space-between;margin-bottom:14px">
+              <h2 style="margin:0">各关键词组命中可视化</h2>
+              <div class="legend small"><span><i style="background:var(--blue)"></i>有效</span><span><i style="background:#C9CDD4"></i>重复</span><span><i style="background:#FFAAA5"></i>不符合</span></div>
+            </div>
+            <div class="bar-list" id="barList"></div>
+            <div class="progress-wrap">
+              <div class="actions" style="justify-content:space-between;margin-bottom:8px"><b id="progressText">已找到有效简历 0 / 20 份</b><span class="small">目标可在代码中调整</span></div>
+              <div class="progress-line"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+            </div>
+          </div>
+          <div class="card col-12">
+            <h2>实时执行日志</h2>
+            <div class="log-box" id="logBox"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="board">
+        <div class="card">
+          <div class="actions" style="justify-content:space-between;margin-bottom:10px">
+            <div>
+              <h2>候选人看板</h2>
+              <p class="hint">跟进情况、HR评价和结果支持直接编辑，并持久化保存。</p>
+            </div>
+          </div>
+          <div class="toolbar">
+            <input class="input" id="candidateSearch" placeholder="按姓名 / 公司搜索" />
+            <select id="candidateSort"><option value="score">按推荐指数</option><option value="years">按工作年限</option><option value="time">按入表时间</option></select>
+            <select id="candidateFilter"><option value="all">全部岗位 / 状态</option><option value="待评价">HR待评价</option><option value="已评价">HR已评价</option><option value="推荐算法工程师">推荐算法工程师</option><option value="AI Infra 后端工程师">AI Infra 后端工程师</option></select>
+          </div>
+          <div style="overflow:auto">
+            <table class="candidate-table">
+              <thead><tr><th>姓名</th><th>手机号</th><th>入表时间</th><th>历史面评</th><th>本科</th><th>硕士</th><th>博士</th><th>年限</th><th>推荐</th><th>最高学历</th><th>跟进情况</th><th>推荐理由</th><th>HR评价</th><th>过往公司</th><th>目标岗位</th><th>People</th><th>结果</th><th>学历</th></tr></thead>
+              <tbody id="candidateBody"></tbody>
+            </table>
+          </div>
+          <div class="candidate-mobile" id="candidateCards"></div>
+          <div class="suggestion" id="suggestionBox">
+            <b>AI 策略优化建议</b>
+            <p id="suggestionText" class="hint" style="margin:8px 0 12px"></p>
+            <button class="btn secondary" id="applySuggestion">应用优化建议</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const STORAGE_KEY = 'ai_sourcing_workbench_v2';
+    const targetValid = 20;
+    const defaultState = {
+      rules: {
+        noReturn: true, recentFails: true, lowEdu: true, years: true, unknownCompany: true
+      },
+      job: { name: '', jd: '', persona: '', savedAt: '' },
+      strategy: {
+        keywords: ['推荐算法', '大模型训练', '搜索召回', '分布式系统'],
+        companies: ['字节跳动', '阿里', '腾讯', '美团', 'Minimax'],
+        yearMin: 4,
+        yearMax: 8
+      },
+      tasks: [
+        { id: 1, selected: true, keyword: '推荐算法 + 字节跳动', status: '待执行', hits: 8 },
+        { id: 2, selected: true, keyword: '大模型训练 + Minimax', status: '待执行', hits: 6 },
+        { id: 3, selected: false, keyword: '搜索召回 + 阿里', status: '已完成', hits: 10 },
+        { id: 4, selected: false, keyword: '分布式系统 + 腾讯', status: '待执行', hits: 5 }
+      ],
+      results: [
+        { name: '推荐算法 + 字节跳动', valid: 5, dup: 2, bad: 1 },
+        { name: '大模型训练 + Minimax', valid: 4, dup: 1, bad: 1 },
+        { name: '搜索召回 + 阿里', valid: 6, dup: 3, bad: 1 },
+        { name: '分布式系统 + 腾讯', valid: 3, dup: 1, bad: 1 }
+      ],
+      candidates: [
+        { name:'张XX', phone:'138****1234', time:'2026-07-28 09:16', history:'无明显负向记录', bachelor:'清华大学', master:'清华大学', doctor:'-', years:6, score:5, topDegree:'硕士', follow:'待电话沟通', reason:'推荐系统经验扎实，近两年负责大模型召回链路优化', hr:'', companies:'字节跳动、快手', role:'推荐算法工程师', link:'https://people-cn.bytedance.com/hire/talent/100001', result:'待定', edu:'硕士' },
+        { name:'李XX', phone:'136****8821', time:'2026-07-28 10:22', history:'2024年一面通过', bachelor:'上海交通大学', master:'-', doctor:'-', years:5, score:4, topDegree:'本科', follow:'已加微信', reason:'后端基础好，有高并发服务和特征平台经验', hr:'', companies:'美团、B站', role:'AI Infra 后端工程师', link:'https://people-cn.bytedance.com/hire/talent/100002', result:'待定', edu:'本科' },
+        { name:'王XX', phone:'139****5678', time:'2026-07-28 11:08', history:'无面试记录', bachelor:'浙江大学', master:'浙江大学', doctor:'-', years:7, score:5, topDegree:'硕士', follow:'简历待业务确认', reason:'大模型训练平台经验匹配，熟悉分布式训练与性能优化', hr:'有大模型训练经验，优先推进', companies:'Minimax、阿里', role:'AI Infra 后端工程师', link:'https://people-cn.bytedance.com/hire/talent/100003', result:'通过', edu:'硕士' },
+        { name:'陈XX', phone:'137****9012', time:'2026-07-28 13:35', history:'2025年简历评估通过', bachelor:'南京大学', master:'-', doctor:'-', years:4, score:3, topDegree:'本科', follow:'需补充项目细节', reason:'搜索召回方向匹配，但大模型经验偏弱', hr:'纯推荐算法权重可适当降低', companies:'京东、滴滴', role:'推荐算法工程师', link:'https://people-cn.bytedance.com/hire/talent/100004', result:'待定', edu:'本科' },
+        { name:'赵XX', phone:'135****3366', time:'2026-07-28 15:04', history:'无明显负向记录', bachelor:'复旦大学', master:'复旦大学', doctor:'-', years:8, score:4, topDegree:'硕士', follow:'待安排初聊', reason:'基础架构经验丰富，有训练任务调度和资源治理经验', hr:'', companies:'华为、月之暗面', role:'AI Infra 后端工程师', link:'https://people-cn.bytedance.com/hire/talent/100005', result:'待定', edu:'硕士' }
+      ],
+      logs: [
+        '[09:01:02] 开始检索关键词组合：「推荐算法 + 字节跳动」',
+        '[09:01:15] 找到候选人：张XX，工作年限6年，学历：清华硕士',
+        '[09:01:16] 去重校验通过，写入候选人表',
+        '[09:01:45] 关键词组合「推荐算法 + 字节跳动」完成，命中8人，有效5人',
+        '[09:03:10] 开始检索关键词组合：「大模型训练 + Minimax」',
+        '[09:03:31] 找到候选人：王XX，工作年限7年，学历：浙江大学硕士',
+        '[09:03:32] 标签校验通过，历史面评无风险',
+        '[09:04:20] 关键词组合「大模型训练 + Minimax」完成，命中6人，有效4人'
+      ]
+    };
+    let state = loadState();
+
+    function loadState(){
+      try { return { ...defaultState, ...JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') }; }
+      catch(e){ return structuredClone(defaultState); }
+    }
+    function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    function toast(msg){ const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2200); }
+    function statusClass(s){ return s==='执行中'?'running':s==='已完成'?'done':'pending'; }
+    function stars(n){ return '★★★★★'.slice(0,n) + '☆☆☆☆☆'.slice(0,5-n); }
+    function safe(v){ return String(v ?? '').replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
+
+    document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active'); document.getElementById(btn.dataset.tab).classList.add('active');
+    }));
+
+    function renderRules(){
+      const labels = [
+        ['noReturn','不可回流标签 → 排除','命中不可回流标签时不推进'],
+        ['recentFails','近半年面试失败2次及以上 → 不推进','降低重复消耗业务面试精力'],
+        ['lowEdu','民办/大专及以下学历 → 排除','按当前筛选口径执行'],
+        ['years','工作年限非4-8年 → 排除','保证经验段与岗位匹配'],
+        ['unknownCompany','非知名大厂/优质初创公司 → 排除','参考阿里、美团、京东、滴滴、腾讯、华为、美图、米哈游、bilibili、minimax、智谱、月之暗面等']
+      ];
+      document.getElementById('rulesBox').innerHTML = labels.map(([key,title,desc])=>`<div class="switch-row"><div class="switch-text"><b>${title}</b><span>${desc}</span></div><label class="switch"><input type="checkbox" data-rule="${key}" ${state.rules[key]?'checked':''}><span class="slider"></span></label></div>`).join('');
+      document.querySelectorAll('[data-rule]').forEach(el=>el.addEventListener('change',e=>{state.rules[e.target.dataset.rule]=e.target.checked;save();}));
+    }
+    function renderJob(){
+      jobName.value = state.job.name; jdText.value = state.job.jd; personaText.value = state.job.persona;
+      saveTime.textContent = state.job.savedAt ? `上次保存：${state.job.savedAt}` : '';
+    }
+    saveConfig.addEventListener('click',()=>{
+      state.job = { name:jobName.value.trim(), jd:jdText.value.trim(), persona:personaText.value.trim(), savedAt:new Date().toLocaleString('zh-CN',{hour12:false}) };
+      save(); renderJob(); toast('岗位配置已保存');
+    });
+
+    function tagHtml(type, list){ return list.map((t,i)=>`<span class="tag">${safe(t)} <button title="删除" data-del="${type}" data-index="${i}">×</button></span>`).join(''); }
+    function renderStrategy(){
+      keywordTags.innerHTML = tagHtml('keywords', state.strategy.keywords);
+      companyTags.innerHTML = tagHtml('companies', state.strategy.companies);
+      yearMin.value = state.strategy.yearMin; yearMax.value = state.strategy.yearMax;
+      document.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{ state.strategy[b.dataset.del].splice(+b.dataset.index,1); save(); renderStrategy(); });
+    }
+    function rebuildTasks(){
+      const kws = state.strategy.keywords.slice(0,4), cos = state.strategy.companies.slice(0,4);
+      state.tasks = kws.map((k,i)=>({ id:Date.now()+i, selected:true, keyword:`${k} + ${cos[i%cos.length] || '目标公司'}`, status:'待执行', hits:Math.floor(Math.random()*6)+5 }));
+    }
+    genAI.addEventListener('click',()=>{
+      genAI.disabled=true; genAI.textContent='生成中...'; aiNote.textContent='正在模拟分析 JD、岗位画像与通用规则...';
+      // AI生成逻辑说明：实际执行时这里会触发 Aime 任务，由 Aime AI 读取岗位 JD 与画像，生成检索关键词、目标公司、工作年限范围，并进一步拆分为飞书招聘人才库的自动化搜索任务；当前纯前端版本用 1.5 秒 loading + 示例数据模拟。
+      setTimeout(()=>{
+        state.strategy = { keywords:['推荐算法','大模型训练','搜索召回','训练平台','分布式系统'], companies:['字节跳动','阿里','腾讯','美团','Minimax','月之暗面'], yearMin:4, yearMax:8 };
+        rebuildTasks(); save(); renderStrategy(); renderTasks();
+        genAI.disabled=false; genAI.textContent='🤖 AI生成检索策略'; aiNote.textContent='实际执行时将由 Aime AI 根据 JD 自动生成检索策略'; toast('检索策略已模拟生成');
+      },1500);
+    });
+    document.querySelectorAll('[data-add]').forEach(btn=>btn.onclick=()=>{
+      const type=btn.dataset.add, input=type==='keywords'?keywordInput:companyInput, val=input.value.trim();
+      if(!val) return; state.strategy[type].push(val); input.value=''; save(); renderStrategy();
+    });
+    [yearMin,yearMax].forEach(el=>el.addEventListener('change',()=>{ state.strategy.yearMin=+yearMin.value||0; state.strategy.yearMax=+yearMax.value||0; save(); }));
+
+    function renderTasks(){
+      taskBody.innerHTML = state.tasks.map(t=>`<tr><td><input type="checkbox" data-task="${t.id}" ${t.selected?'checked':''}></td><td><b>${safe(t.keyword)}</b></td><td><span class="status ${statusClass(t.status)}">${t.status}</span></td><td>${t.hits}</td></tr>`).join('');
+      document.querySelectorAll('[data-task]').forEach(cb=>cb.onchange=()=>{ const t=state.tasks.find(x=>x.id==cb.dataset.task); t.selected=cb.checked; save(); });
+    }
+    selectAll.addEventListener('click',()=>{ const all=!state.tasks.every(t=>t.selected); state.tasks.forEach(t=>t.selected=all); save(); renderTasks(); });
+    startTasks.addEventListener('click',()=>{
+      const chosen=state.tasks.filter(t=>t.selected); if(!chosen.length) return toast('请先选择任务');
+      alert('将触发 Aime 自动化任务，请确保 Aime 已连接飞书招聘人才库');
+      chosen.forEach(t=>t.status='执行中'); save(); renderTasks();
+      setTimeout(()=>{ chosen.forEach(t=>t.status='已完成'); save(); renderTasks(); toast('选中任务已模拟完成'); },1200);
+    });
+
+    function renderProgress(){
+      const total = state.results.reduce((s,r)=>s+r.valid+r.dup+r.bad,0), valid=state.results.reduce((s,r)=>s+r.valid,0), dup=state.results.reduce((s,r)=>s+r.dup,0);
+      totalCount.textContent=total; validCount.textContent=valid; dupCount.textContent=dup;
+      const max=Math.max(...state.results.map(r=>r.valid+r.dup+r.bad));
+      barList.innerHTML = state.results.map(r=>{
+        const sum=r.valid+r.dup+r.bad, width=Math.max(18, sum/max*100);
+        return `<div class="bar-row"><b>${safe(r.name)}</b><div class="stack" style="width:${width}%"><div class="seg valid" style="width:${r.valid/sum*100}%"></div><div class="seg dup" style="width:${r.dup/sum*100}%"></div><div class="seg bad" style="width:${r.bad/sum*100}%"></div></div><span>${sum}人</span></div>`;
+      }).join('');
+      progressText.textContent=`已找到有效简历 ${valid} / 目标 ${targetValid} 份`; progressFill.style.width=Math.min(100,valid/targetValid*100)+'%';
+      logBox.innerHTML = state.logs.map(l=>`<div class="log-line">${safe(l)}</div>`).join(''); logBox.scrollTop=logBox.scrollHeight;
+    }
+
+    function filteredCandidates(){
+      const q=candidateSearch.value.trim().toLowerCase(), f=candidateFilter.value;
+      let list=state.candidates.filter(c=>!q || c.name.toLowerCase().includes(q) || c.companies.toLowerCase().includes(q));
+      if(f==='待评价') list=list.filter(c=>!c.hr.trim());
+      else if(f==='已评价') list=list.filter(c=>c.hr.trim());
+      else if(f!=='all') list=list.filter(c=>c.role===f);
+      const sort=candidateSort.value;
+      list.sort((a,b)=> sort==='years'?b.years-a.years:sort==='time'?new Date(b.time)-new Date(a.time):b.score-a.score);
+      return list;
+    }
+    function renderCandidates(){
+      const list=filteredCandidates();
+      candidateBody.innerHTML = list.map((c)=>rowHtml(c)).join('');
+      candidateCards.innerHTML = list.map(c=>cardHtml(c)).join('');
+      bindCandidateEdits(); renderSuggestion();
+    }
+    function rowHtml(c){
+      const i=state.candidates.indexOf(c);
+      return `<tr><td><b>${safe(c.name)}</b></td><td>${c.phone}</td><td>${c.time}</td><td>${safe(c.history)}</td><td>${safe(c.bachelor)}</td><td>${safe(c.master)}</td><td>${safe(c.doctor)}</td><td>${c.years}年</td><td><span class="stars">${stars(c.score)}</span></td><td>${safe(c.topDegree)}</td><td><div class="edit" contenteditable data-edit="follow" data-i="${i}">${safe(c.follow)}</div></td><td>${safe(c.reason)}</td><td><div class="edit" contenteditable data-edit="hr" data-i="${i}">${safe(c.hr)}</div></td><td>${safe(c.companies)}</td><td>${safe(c.role)}</td><td><a class="link" href="${c.link}" target="_blank">查看</a></td><td><select data-result="${i}"><option ${c.result==='待定'?'selected':''}>待定</option><option ${c.result==='通过'?'selected':''}>通过</option><option ${c.result==='淘汰'?'selected':''}>淘汰</option></select></td><td><span class="edu">${safe(c.edu)}</span></td></tr>`;
+    }
+    function cardHtml(c){
+      const i=state.candidates.indexOf(c);
+      return `<article class="candidate-card"><div class="candidate-head"><div><b>${safe(c.name)}</b><div class="small">${safe(c.role)} · ${safe(c.companies)}</div></div><span class="stars">${stars(c.score)}</span></div><div class="candidate-meta"><span>手机号：<b>${c.phone}</b></span><span>年限：<b>${c.years}年</b></span><span>学历：<b>${safe(c.topDegree)}</b></span><span>入表：<b>${c.time.slice(5,16)}</b></span></div><p class="hint">${safe(c.reason)}</p><label>跟进情况</label><div class="edit" contenteditable data-edit="follow" data-i="${i}">${safe(c.follow)}</div><label>HR评价</label><div class="edit" contenteditable data-edit="hr" data-i="${i}">${safe(c.hr)}</div><div class="actions" style="margin-top:10px"><select data-result="${i}"><option ${c.result==='待定'?'selected':''}>待定</option><option ${c.result==='通过'?'selected':''}>通过</option><option ${c.result==='淘汰'?'selected':''}>淘汰</option></select><a class="link" href="${c.link}" target="_blank">查看 People</a></div></article>`;
+    }
+    function bindCandidateEdits(){
+      document.querySelectorAll('[data-edit]').forEach(el=>el.onblur=()=>{ state.candidates[+el.dataset.i][el.dataset.edit]=el.textContent.trim(); save(); renderSuggestion(); });
+      document.querySelectorAll('[data-result]').forEach(el=>el.onchange=()=>{ state.candidates[+el.dataset.result].result=el.value; save(); });
+    }
+    function renderSuggestion(){
+      const count=state.candidates.filter(c=>c.hr.trim()).length;
+      if(count>0){ suggestionBox.classList.add('show'); suggestionText.textContent=`根据当前 ${count} 条 HR 评价，建议：优先关注有大模型训练经验的候选人，降低纯推荐算法方向权重。`; }
+      else suggestionBox.classList.remove('show');
+    }
+    applySuggestion.addEventListener('click',()=>{ if(!state.strategy.keywords.includes('大模型训练经验')) state.strategy.keywords.unshift('大模型训练经验'); save(); renderStrategy(); toast('优化建议已应用到检索关键词'); });
+    [candidateSearch,candidateSort,candidateFilter].forEach(el=>el.addEventListener('input',renderCandidates));
+
+    function init(){ renderRules(); renderJob(); renderStrategy(); renderTasks(); renderProgress(); renderCandidates(); }
+    init();
+  </script>
+</body>
+</html>
