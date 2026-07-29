@@ -48,7 +48,7 @@
     .metric{display:flex;flex-direction:column;gap:6px}.metric strong{font-size:30px;color:var(--blue)}.metric span{color:var(--muted)}
     .bar-list{display:grid;gap:14px}.bar-row{display:grid;grid-template-columns:170px 1fr 48px;gap:12px;align-items:center}.stack{height:22px;background:#F2F3F5;border-radius:999px;overflow:hidden;display:flex}.seg{height:100%}.seg.valid{background:var(--blue)}.seg.dup{background:#C9CDD4}.seg.bad{background:#FFAAA5}.legend{display:flex;gap:14px;flex-wrap:wrap}.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}.progress-wrap{margin-top:16px}.progress-line{height:12px;border-radius:999px;background:#EDEFF5;overflow:hidden}.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),#5D8CFF);border-radius:999px;transition:.3s}
     .log-box{height:220px;overflow:auto;border-radius:14px;background:#101820;color:#66F28A;padding:14px;font-family:"SFMono-Regular",Consolas,monospace;font-size:13px;line-height:1.8;border:1px solid #1F2A37}.log-line{white-space:pre-wrap}
-    .toolbar{display:grid;grid-template-columns:1.5fr 180px 180px;gap:10px;margin-bottom:12px}.candidate-mobile{display:none}.stars{color:#FFB020;letter-spacing:1px;white-space:nowrap}.edit{min-width:90px;border:1px dashed transparent;border-radius:8px;padding:6px;outline:none}.edit:hover,.edit:focus{border-color:var(--blue);background:var(--blue-3)}.link{color:var(--blue);font-weight:700;text-decoration:none}.edu{display:inline-flex;padding:5px 8px;border-radius:999px;background:#F0F5FF;color:var(--blue);font-size:12px;font-weight:700}.suggestion{display:none;margin-top:14px;padding:14px;border-radius:14px;border:1px solid rgba(20,86,240,.18);background:linear-gradient(135deg,#F5F8FF,#fff)}.suggestion.show{display:block}.toast{position:fixed;right:20px;bottom:20px;z-index:99;background:#1F2329;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:var(--shadow);opacity:0;transform:translateY(12px);pointer-events:none;transition:.25s}.toast.show{opacity:1;transform:none}
+    .toolbar{display:grid;grid-template-columns:1.5fr 180px 180px;gap:10px;margin-bottom:12px}.candidate-mobile{display:none}.stars{color:#FFB020;letter-spacing:1px;white-space:nowrap}.edit{min-width:90px;border:1px dashed transparent;border-radius:8px;padding:6px;outline:none}.edit:hover,.edit:focus{border-color:var(--blue);background:var(--blue-3)}.link{color:var(--blue);font-weight:700;text-decoration:none}.edu{display:inline-flex;padding:5px 8px;border-radius:999px;background:#F0F5FF;color:var(--blue);font-size:12px;font-weight:700}.aime-area{margin-top:16px;border:1px solid rgba(20,86,240,.18);background:linear-gradient(135deg,#F5F8FF,#fff);border-radius:16px;padding:16px}.prompt-box{min-height:260px;font-size:13px;line-height:1.6;background:#FCFDFF}.json-box{min-height:150px;font-size:13px;line-height:1.6}.suggestion{display:none;margin-top:14px;padding:14px;border-radius:14px;border:1px solid rgba(20,86,240,.18);background:linear-gradient(135deg,#F5F8FF,#fff)}.suggestion.show{display:block}.toast{position:fixed;right:20px;bottom:20px;z-index:99;background:#1F2329;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:var(--shadow);opacity:0;transform:translateY(12px);pointer-events:none;transition:.25s}.toast.show{opacity:1;transform:none}
     @media (max-width:860px){.app{padding:14px 12px 32px}.hero{align-items:flex-start;flex-direction:column;border-radius:20px}.hero h1{font-size:22px}.tabs{grid-template-columns:repeat(2,1fr);gap:8px;padding:8px 0}.grid{display:block}.card{margin-bottom:12px;padding:15px}.toolbar{grid-template-columns:1fr}.bar-row{grid-template-columns:1fr;gap:7px}.candidate-table{display:none}.candidate-mobile{display:grid;gap:12px}.candidate-card{border:1px solid var(--line);border-radius:16px;background:#fff;padding:14px;box-shadow:0 8px 18px rgba(31,35,41,.04)}.candidate-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:10px}.candidate-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px;color:var(--muted)}.candidate-meta b{color:var(--text)}.task-table{font-size:13px}.task-table th:nth-child(4),.task-table td:nth-child(4){display:none}.add-tag{display:block}.add-tag .input{max-width:none;margin-bottom:8px}}
   </style>
 </head>
@@ -123,6 +123,22 @@
                   <input class="input" id="yearMax" type="number" min="0" style="max-width:120px" />
                   <span>年</span>
                 </div>
+              </div>
+            </div>
+            <div class="aime-area" id="aimePromptArea">
+              <div class="actions" style="justify-content:space-between;margin-bottom:10px">
+                <div>
+                  <h3 style="margin:0 0 6px">发给 Aime</h3>
+                  <p class="hint" style="margin:0">复制后发给 Aime，Aime 会根据 JD 生成检索策略并回填到此页面</p>
+                </div>
+                <button class="btn secondary" id="copyPrompt">📋 复制 Prompt</button>
+              </div>
+              <textarea class="prompt-box" id="aimePrompt" readonly placeholder="保存岗位配置或点击 AI生成检索策略后，这里会自动生成 Prompt"></textarea>
+              <label for="aimeJson">粘贴 Aime 返回结果（JSON，可选）</label>
+              <textarea class="json-box" id="aimeJson" placeholder='将 Aime 返回的 JSON 粘贴到这里，例如：{"keywords_groups":[{"keyword":"推荐算法 + 大模型","description":"..."}],"target_companies":["阿里"],"experience_range":"4-8年","evaluation_focus":["..."]}'></textarea>
+              <div class="actions" style="margin-top:10px">
+                <button class="btn" id="applyAimeJson">解析并回填策略</button>
+                <span class="small" id="jsonTip"></span>
               </div>
             </div>
           </div>
@@ -245,6 +261,13 @@
       ]
     };
     let state = loadState();
+    const RULE_LABELS = [
+      ['noReturn','不可回流标签 → 排除','命中不可回流标签时不推进'],
+      ['recentFails','近半年面试失败2次及以上 → 不推进','降低重复消耗业务面试精力'],
+      ['lowEdu','民办/大专及以下学历 → 排除','按当前筛选口径执行'],
+      ['years','工作年限非4-8年 → 排除','保证经验段与岗位匹配'],
+      ['unknownCompany','非知名大厂/优质初创公司 → 排除','参考阿里、美团、京东、滴滴、腾讯、华为、美图、米哈游、bilibili、minimax、智谱、月之暗面等']
+    ];
 
     function loadState(){
       try { return { ...defaultState, ...JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') }; }
@@ -256,21 +279,14 @@
     function stars(n){ return '★★★★★'.slice(0,n) + '☆☆☆☆☆'.slice(0,5-n); }
     function safe(v){ return String(v ?? '').replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
 
-    document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{
-      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-      btn.classList.add('active'); document.getElementById(btn.dataset.tab).classList.add('active');
-    }));
+    function switchTab(tabId){
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tabId));
+      document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.id===tabId));
+    }
+    document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>switchTab(btn.dataset.tab)));
 
     function renderRules(){
-      const labels = [
-        ['noReturn','不可回流标签 → 排除','命中不可回流标签时不推进'],
-        ['recentFails','近半年面试失败2次及以上 → 不推进','降低重复消耗业务面试精力'],
-        ['lowEdu','民办/大专及以下学历 → 排除','按当前筛选口径执行'],
-        ['years','工作年限非4-8年 → 排除','保证经验段与岗位匹配'],
-        ['unknownCompany','非知名大厂/优质初创公司 → 排除','参考阿里、美团、京东、滴滴、腾讯、华为、美图、米哈游、bilibili、minimax、智谱、月之暗面等']
-      ];
-      document.getElementById('rulesBox').innerHTML = labels.map(([key,title,desc])=>`<div class="switch-row"><div class="switch-text"><b>${title}</b><span>${desc}</span></div><label class="switch"><input type="checkbox" data-rule="${key}" ${state.rules[key]?'checked':''}><span class="slider"></span></label></div>`).join('');
+      document.getElementById('rulesBox').innerHTML = RULE_LABELS.map(([key,title,desc])=>`<div class="switch-row"><div class="switch-text"><b>${title}</b><span>${desc}</span></div><label class="switch"><input type="checkbox" data-rule="${key}" ${state.rules[key]?'checked':''}><span class="slider"></span></label></div>`).join('');
       document.querySelectorAll('[data-rule]').forEach(el=>el.addEventListener('change',e=>{state.rules[e.target.dataset.rule]=e.target.checked;save();}));
     }
     function renderJob(){
@@ -279,7 +295,7 @@
     }
     saveConfig.addEventListener('click',()=>{
       state.job = { name:jobName.value.trim(), jd:jdText.value.trim(), persona:personaText.value.trim(), savedAt:new Date().toLocaleString('zh-CN',{hour12:false}) };
-      save(); renderJob(); toast('岗位配置已保存');
+      save(); renderJob(); switchTab('strategy'); generateAimePrompt(true); toast('岗位配置已保存，已生成发给 Aime 的 Prompt');
     });
 
     function tagHtml(type, list){ return list.map((t,i)=>`<span class="tag">${safe(t)} <button title="删除" data-del="${type}" data-index="${i}">×</button></span>`).join(''); }
@@ -293,14 +309,74 @@
       const kws = state.strategy.keywords.slice(0,4), cos = state.strategy.companies.slice(0,4);
       state.tasks = kws.map((k,i)=>({ id:Date.now()+i, selected:true, keyword:`${k} + ${cos[i%cos.length] || '目标公司'}`, status:'待执行', hits:Math.floor(Math.random()*6)+5 }));
     }
-    genAI.addEventListener('click',()=>{
-      genAI.disabled=true; genAI.textContent='生成中...'; aiNote.textContent='正在模拟分析 JD、岗位画像与通用规则...';
-      // AI生成逻辑说明：实际执行时这里会触发 Aime 任务，由 Aime AI 读取岗位 JD 与画像，生成检索关键词、目标公司、工作年限范围，并进一步拆分为飞书招聘人才库的自动化搜索任务；当前纯前端版本用 1.5 秒 loading + 示例数据模拟。
+    function buildAimePrompt(){
+      let saved = {};
+      try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e) { saved = {}; }
+      const job = saved.job || state.job;
+      const rules = saved.rules || state.rules;
+      const enabledRules = RULE_LABELS.filter(([key])=>rules[key]).map(([,title])=>`- ${title}`).join('\n') || '- 暂无开启规则';
+      return `你是一位资深招聘专家，请根据以下岗位信息生成飞书招聘人才库的检索策略：
+
+【岗位名称】${job.name || '未填写'}
+
+【JD内容】
+${job.jd || '未填写'}
+
+【岗位画像/特殊要求】
+${job.persona || '未填写'}
+
+【通用筛选规则】
+${enabledRules}
+
+请生成：
+1. 5-8组关键词搜索组合（每组：核心技能词 + 辅助词，用于在人才库搜索框输入）
+2. 10-15个目标公司名单
+3. 建议工作年限范围
+4. 候选人评估重点（3-5条）
+
+输出格式要求：JSON格式，字段：keywords_groups(数组，每项含keyword和description)、target_companies(数组)、experience_range(字符串)、evaluation_focus(数组)`;
+    }
+    function generateAimePrompt(fromSave=false){
+      genAI.disabled=true; genAI.textContent='生成中...'; aiNote.textContent='正在读取 localStorage 中的岗位配置，并生成可发送给 Aime 的 Prompt...';
       setTimeout(()=>{
-        state.strategy = { keywords:['推荐算法','大模型训练','搜索召回','训练平台','分布式系统'], companies:['字节跳动','阿里','腾讯','美团','Minimax','月之暗面'], yearMin:4, yearMax:8 };
+        aimePrompt.value = buildAimePrompt();
+        genAI.disabled=false; genAI.textContent='🤖 AI生成检索策略';
+        aiNote.textContent='页面无法直接调用 Aime API，请复制下方 Prompt 发给 Aime，再将返回 JSON 粘贴回填。';
+        if(!fromSave) toast('Prompt 已生成，可复制发给 Aime');
+      },500);
+    }
+    genAI.addEventListener('click',()=>generateAimePrompt(false));
+    copyPrompt.addEventListener('click',async()=>{
+      if(!aimePrompt.value.trim()) aimePrompt.value = buildAimePrompt();
+      try { await navigator.clipboard.writeText(aimePrompt.value); toast('Prompt 已复制'); }
+      catch(e){ aimePrompt.select(); document.execCommand('copy'); toast('Prompt 已复制'); }
+    });
+    function parseExperienceRange(range){
+      const nums = String(range || '').match(/\d+/g) || [];
+      return { min: nums[0] ? Number(nums[0]) : state.strategy.yearMin, max: nums[1] ? Number(nums[1]) : state.strategy.yearMax };
+    }
+    function cleanJsonText(text){
+      const raw = text.trim().replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/```$/,'').trim();
+      const start = raw.indexOf('{'), end = raw.lastIndexOf('}');
+      return start >= 0 && end > start ? raw.slice(start, end + 1) : raw;
+    }
+    applyAimeJson.addEventListener('click',()=>{
+      try{
+        const data = JSON.parse(cleanJsonText(aimeJson.value));
+        const keywords = (data.keywords_groups || []).map(item=>typeof item==='string'?item:item.keyword).filter(Boolean);
+        const companies = (data.target_companies || []).filter(Boolean);
+        const years = parseExperienceRange(data.experience_range);
+        if(!keywords.length && !companies.length) throw new Error('JSON 中未找到关键词或公司列表');
+        state.strategy.keywords = keywords.length ? keywords : state.strategy.keywords;
+        state.strategy.companies = companies.length ? companies : state.strategy.companies;
+        state.strategy.yearMin = years.min; state.strategy.yearMax = years.max;
         rebuildTasks(); save(); renderStrategy(); renderTasks();
-        genAI.disabled=false; genAI.textContent='🤖 AI生成检索策略'; aiNote.textContent='实际执行时将由 Aime AI 根据 JD 自动生成检索策略'; toast('检索策略已模拟生成');
-      },1500);
+        jsonTip.textContent = `已回填 ${keywords.length} 组关键词、${companies.length} 个目标公司`;
+        toast('Aime 返回结果已回填');
+      }catch(e){
+        jsonTip.textContent = '解析失败：请确认粘贴的是完整 JSON';
+        toast('JSON 解析失败');
+      }
     });
     document.querySelectorAll('[data-add]').forEach(btn=>btn.onclick=()=>{
       const type=btn.dataset.add, input=type==='keywords'?keywordInput:companyInput, val=input.value.trim();
