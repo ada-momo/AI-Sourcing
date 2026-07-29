@@ -48,7 +48,7 @@
     .metric{display:flex;flex-direction:column;gap:6px}.metric strong{font-size:30px;color:var(--blue)}.metric span{color:var(--muted)}
     .bar-list{display:grid;gap:14px}.bar-row{display:grid;grid-template-columns:170px 1fr 48px;gap:12px;align-items:center}.stack{height:22px;background:#F2F3F5;border-radius:999px;overflow:hidden;display:flex}.seg{height:100%}.seg.valid{background:var(--blue)}.seg.dup{background:#C9CDD4}.seg.bad{background:#FFAAA5}.legend{display:flex;gap:14px;flex-wrap:wrap}.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}.progress-wrap{margin-top:16px}.progress-line{height:12px;border-radius:999px;background:#EDEFF5;overflow:hidden}.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),#5D8CFF);border-radius:999px;transition:.3s}
     .log-box{height:220px;overflow:auto;border-radius:14px;background:#101820;color:#66F28A;padding:14px;font-family:"SFMono-Regular",Consolas,monospace;font-size:13px;line-height:1.8;border:1px solid #1F2A37}.log-line{white-space:pre-wrap}
-    .toolbar{display:grid;grid-template-columns:1.5fr 180px 180px;gap:10px;margin-bottom:12px}.candidate-mobile{display:none}.stars{color:#FFB020;letter-spacing:1px;white-space:nowrap}.edit{min-width:90px;border:1px dashed transparent;border-radius:8px;padding:6px;outline:none}.edit:hover,.edit:focus{border-color:var(--blue);background:var(--blue-3)}.link{color:var(--blue);font-weight:700;text-decoration:none}.edu{display:inline-flex;padding:5px 8px;border-radius:999px;background:#F0F5FF;color:var(--blue);font-size:12px;font-weight:700}.aime-area{margin-top:16px;border:1px solid rgba(20,86,240,.18);background:linear-gradient(135deg,#F5F8FF,#fff);border-radius:16px;padding:16px}.prompt-box{min-height:260px;font-size:13px;line-height:1.6;background:#FCFDFF}.json-box{min-height:150px;font-size:13px;line-height:1.6}.drawer-mask{position:fixed;inset:0;z-index:80;display:none;align-items:flex-end;background:rgba(15,23,42,.36);backdrop-filter:blur(6px)}.drawer-mask.show{display:flex}.drawer{width:100%;max-height:86vh;overflow:auto;background:#fff;border-radius:24px 24px 0 0;box-shadow:0 -18px 50px rgba(31,35,41,.18);padding:22px}.drawer-inner{max-width:920px;margin:0 auto}.instruction-box{min-height:330px;font-size:14px;line-height:1.65;background:#FCFDFF}.suggestion{display:none;margin-top:14px;padding:14px;border-radius:14px;border:1px solid rgba(20,86,240,.18);background:linear-gradient(135deg,#F5F8FF,#fff)}.suggestion.show{display:block}.toast{position:fixed;right:20px;bottom:20px;z-index:99;background:#1F2329;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:var(--shadow);opacity:0;transform:translateY(12px);pointer-events:none;transition:.25s}.toast.show{opacity:1;transform:none}
+    .toolbar{display:grid;grid-template-columns:1.5fr 180px 180px;gap:10px;margin-bottom:12px}.board-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.data-status{margin-bottom:12px;padding:10px 12px;border-radius:12px;background:#FFF7E8;color:#B35B00;font-size:13px;display:none}.data-status.show{display:block}.candidate-mobile{display:none}.stars{color:#FFB020;letter-spacing:1px;white-space:nowrap}.edit{min-width:90px;border:1px dashed transparent;border-radius:8px;padding:6px;outline:none}.edit:hover,.edit:focus{border-color:var(--blue);background:var(--blue-3)}.link{color:var(--blue);font-weight:700;text-decoration:none}.edu{display:inline-flex;padding:5px 8px;border-radius:999px;background:#F0F5FF;color:var(--blue);font-size:12px;font-weight:700}.aime-area{margin-top:16px;border:1px solid rgba(20,86,240,.18);background:linear-gradient(135deg,#F5F8FF,#fff);border-radius:16px;padding:16px}.prompt-box{min-height:260px;font-size:13px;line-height:1.6;background:#FCFDFF}.json-box{min-height:150px;font-size:13px;line-height:1.6}.drawer-mask,.modal-mask{position:fixed;inset:0;z-index:80;display:none;background:rgba(15,23,42,.36);backdrop-filter:blur(6px)}.drawer-mask{align-items:flex-end}.drawer-mask.show,.modal-mask.show{display:flex}.modal-mask{align-items:center;justify-content:center;padding:16px}.drawer{width:100%;max-height:86vh;overflow:auto;background:#fff;border-radius:24px 24px 0 0;box-shadow:0 -18px 50px rgba(31,35,41,.18);padding:22px}.drawer-inner{max-width:920px;margin:0 auto}.modal{width:100%;max-width:520px;background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:20px}.instruction-box{min-height:330px;font-size:14px;line-height:1.65;background:#FCFDFF}.suggestion{display:none;margin-top:14px;padding:14px;border-radius:14px;border:1px solid rgba(20,86,240,.18);background:linear-gradient(135deg,#F5F8FF,#fff)}.suggestion.show{display:block}.toast{position:fixed;right:20px;bottom:20px;z-index:99;background:#1F2329;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:var(--shadow);opacity:0;transform:translateY(12px);pointer-events:none;transition:.25s}.toast.show{opacity:1;transform:none}
     @media (max-width:860px){.app{padding:14px 12px 32px}.hero{align-items:flex-start;flex-direction:column;border-radius:20px}.hero h1{font-size:22px}.tabs{grid-template-columns:repeat(2,1fr);gap:8px;padding:8px 0}.grid{display:block}.card{margin-bottom:12px;padding:15px}.toolbar{grid-template-columns:1fr}.bar-row{grid-template-columns:1fr;gap:7px}.candidate-table{display:none}.candidate-mobile{display:grid;gap:12px}.candidate-card{border:1px solid var(--line);border-radius:16px;background:#fff;padding:14px;box-shadow:0 8px 18px rgba(31,35,41,.04)}.candidate-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:10px}.candidate-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px;color:var(--muted)}.candidate-meta b{color:var(--text)}.task-table{font-size:13px}.task-table th:nth-child(4),.task-table td:nth-child(4){display:none}.add-tag{display:block}.add-tag .input{max-width:none;margin-bottom:8px}}
   </style>
 </head>
@@ -200,7 +200,12 @@
               <h2>候选人看板</h2>
               <p class="hint">跟进情况、HR评价和结果支持直接编辑，并持久化保存。</p>
             </div>
+            <div class="board-tools">
+              <button class="btn secondary" id="setTokenBtn">🔑 设置飞书 Token</button>
+              <button class="btn ghost" id="refreshBitable">🔄 刷新数据</button>
+            </div>
           </div>
+          <div class="data-status" id="bitableStatus">请先设置飞书 Personal Access Token</div>
           <div class="toolbar">
             <input class="input" id="candidateSearch" placeholder="按姓名 / 公司搜索" />
             <select id="candidateSort"><option value="score">按推荐指数</option><option value="years">按工作年限</option><option value="time">按入表时间</option></select>
@@ -240,9 +245,25 @@
       </div>
     </div>
   </div>
+  <div class="modal-mask" id="tokenModal" role="dialog" aria-modal="true" aria-labelledby="tokenTitle">
+    <div class="modal">
+      <h2 id="tokenTitle" style="margin:0 0 8px">设置飞书 Personal Access Token</h2>
+      <p class="hint">Token 仅保存在当前浏览器 localStorage，用于读取指定多维表格数据。</p>
+      <label for="tokenInput">Personal Access Token</label>
+      <input class="input" id="tokenInput" type="password" placeholder="粘贴 Bearer Token，不需要输入 Bearer 前缀" />
+      <p class="small">如果请求被浏览器 CORS 拦截，需要改用后端代理/Serverless 中转；静态页面本身无法绕过 CORS。</p>
+      <div class="actions" style="justify-content:flex-end;margin-top:14px">
+        <button class="btn ghost" id="cancelToken">取消</button>
+        <button class="btn" id="saveToken">保存并拉取数据</button>
+      </div>
+    </div>
+  </div>
 
   <script>
     const STORAGE_KEY = 'ai_sourcing_workbench_v2';
+    const TOKEN_KEY = 'ai_sourcing_feishu_pat';
+    const BITABLE_APP_TOKEN = 'J8trbzpDbaai7lsNgmScshuanHe';
+    const BITABLE_TABLE_ID = 'tbl0lGKtLCwRSgcS';
     const targetValid = 20;
     const defaultState = {
       rules: {
@@ -539,6 +560,104 @@ ${config.job.persona || '未填写'}
       logBox.innerHTML = state.logs.map(l=>`<div class="log-line">${safe(l)}</div>`).join(''); logBox.scrollTop=logBox.scrollHeight;
     }
 
+    function showBitableStatus(msg, visible=true){
+      bitableStatus.textContent = msg;
+      bitableStatus.classList.toggle('show', visible);
+    }
+    function getFeishuToken(){ return localStorage.getItem(TOKEN_KEY) || ''; }
+    function openTokenModal(){ tokenInput.value = getFeishuToken(); tokenModal.classList.add('show'); tokenInput.focus(); }
+    function closeTokenModal(){ tokenModal.classList.remove('show'); }
+    function fieldValue(fields, name){ return fields && Object.prototype.hasOwnProperty.call(fields, name) ? fields[name] : ''; }
+    function cellText(value){
+      if(value === null || value === undefined) return '';
+      if(typeof value === 'string' || typeof value === 'number') return String(value);
+      if(Array.isArray(value)) return value.map(cellText).filter(Boolean).join('、');
+      if(typeof value === 'object') return cellText(value.text || value.name || value.value || value.url || value.link || '');
+      return String(value);
+    }
+    function formatBitableDate(value){
+      const text = cellText(value);
+      if(/^\d{10,13}$/.test(text)){
+        const date = new Date(Number(text.length === 10 ? text + '000' : text));
+        return Number.isNaN(date.getTime()) ? text : date.toLocaleString('zh-CN',{hour12:false}).replace(/\//g,'-');
+      }
+      return text;
+    }
+    function maskPhone(raw){
+      const text = cellText(raw);
+      const digits = text.replace(/\D/g,'');
+      return digits.length >= 11 ? `${digits.slice(0,3)}****${digits.slice(-4)}` : text;
+    }
+    function recordToCandidate(record){
+      const f = record.fields || {};
+      const score = Number(cellText(fieldValue(f,'推荐指数')).match(/\d+/)?.[0] || 3);
+      return {
+        name: cellText(fieldValue(f,'姓名')) || '未命名',
+        phone: maskPhone(fieldValue(f,'人选手机号')),
+        time: formatBitableDate(fieldValue(f,'入表时间')) || '-',
+        history: cellText(fieldValue(f,'历史面评情况')),
+        bachelor: cellText(fieldValue(f,'本科院校')),
+        master: cellText(fieldValue(f,'硕士院校')),
+        doctor: cellText(fieldValue(f,'博士院校')),
+        years: Number(cellText(fieldValue(f,'工作年限')).match(/\d+/)?.[0] || 0),
+        score: Math.max(1, Math.min(5, score)),
+        topDegree: cellText(fieldValue(f,'最高学历层次')),
+        follow: cellText(fieldValue(f,'跟进情况')),
+        reason: cellText(fieldValue(f,'推荐理由')),
+        hr: cellText(fieldValue(f,'HR评价')),
+        companies: cellText(fieldValue(f,'过往公司名称')),
+        role: cellText(fieldValue(f,'目标岗位')),
+        link: cellText(fieldValue(f,'People链接')) || '#',
+        result: cellText(fieldValue(f,'结果')) || '待定',
+        edu: cellText(fieldValue(f,'学历')) || cellText(fieldValue(f,'最高学历层次'))
+      };
+    }
+    async function fetchBitableCandidates(){
+      const token = getFeishuToken();
+      if(!token){ showBitableStatus('请先设置飞书 Personal Access Token'); return; }
+      refreshBitable.disabled = true;
+      refreshBitable.textContent = '刷新中...';
+      showBitableStatus('正在从飞书多维表格拉取数据...', true);
+      try{
+        const all = [];
+        let pageToken = '';
+        do{
+          const params = new URLSearchParams({ page_size: '500' });
+          if(pageToken) params.set('page_token', pageToken);
+          const url = `https://open.feishu.cn/open-apis/bitable/v1/apps/${BITABLE_APP_TOKEN}/tables/${BITABLE_TABLE_ID}/records?${params.toString()}`;
+          // GitHub Pages 是静态跨域页面：如果飞书 OpenAPI 未返回允许当前域名的 CORS 响应头，浏览器会拦截请求；这种情况需要后端代理或 Serverless 中转。
+          const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+          if(!res.ok) throw new Error(`HTTP ${res.status}`);
+          const json = await res.json();
+          if(json.code && json.code !== 0) throw new Error(json.msg || '接口返回失败');
+          all.push(...(json.data?.items || []));
+          pageToken = json.data?.has_more ? (json.data?.page_token || '') : '';
+        } while(pageToken);
+        if(!all.length){ showBitableStatus('多维表格暂无记录，已保留示例数据'); return; }
+        state.candidates = all.map(recordToCandidate);
+        save(); renderCandidates();
+        showBitableStatus(`已从飞书多维表格加载 ${state.candidates.length} 条候选人数据`, true);
+        toast('候选人数据已刷新');
+      }catch(e){
+        showBitableStatus('请先设置飞书 Personal Access Token，或检查 Token 权限 / CORS 限制');
+        toast('飞书数据拉取失败');
+      }finally{
+        refreshBitable.disabled = false;
+        refreshBitable.textContent = '🔄 刷新数据';
+      }
+    }
+    setTokenBtn.addEventListener('click',openTokenModal);
+    cancelToken.addEventListener('click',closeTokenModal);
+    tokenModal.addEventListener('click',e=>{ if(e.target===tokenModal) closeTokenModal(); });
+    saveToken.addEventListener('click',()=>{
+      const token = tokenInput.value.trim().replace(/^Bearer\s+/i,'');
+      if(!token) return showBitableStatus('请先设置飞书 Personal Access Token');
+      localStorage.setItem(TOKEN_KEY, token);
+      closeTokenModal();
+      fetchBitableCandidates();
+    });
+    refreshBitable.addEventListener('click',fetchBitableCandidates);
+
     function filteredCandidates(){
       const q=candidateSearch.value.trim().toLowerCase(), f=candidateFilter.value;
       let list=state.candidates.filter(c=>!q || c.name.toLowerCase().includes(q) || c.companies.toLowerCase().includes(q));
@@ -579,7 +698,10 @@ ${config.job.persona || '未填写'}
     });
     [candidateSearch,candidateSort,candidateFilter].forEach(el=>el.addEventListener('input',renderCandidates));
 
-    function init(){ state.strategy = normalizeStrategy(state.strategy); rebuildTasks(); renderRules(); renderJob(); renderStrategy(); renderTasks(); renderProgress(); renderCandidates(); }
+    function init(){
+      state.strategy = normalizeStrategy(state.strategy); rebuildTasks(); renderRules(); renderJob(); renderStrategy(); renderTasks(); renderProgress(); renderCandidates();
+      if(getFeishuToken()) setTimeout(fetchBitableCandidates, 0); else showBitableStatus('请先设置飞书 Personal Access Token');
+    }
     init();
   </script>
 </body>
